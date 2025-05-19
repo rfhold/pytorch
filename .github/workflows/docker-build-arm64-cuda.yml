@@ -10,8 +10,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: [3.12]
-        cuda-version: [11.8]
+        python-version: ["3.12"]
+        cuda-version: ["11.8.0"]
         platform: ["linux/arm64"]
     steps:
       - name: Checkout code
