@@ -1,0 +1,29 @@
+name: Docker Build ARM64 CUDA
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build and Push Docker Image
+    runs-on: arm-nvidia-runner-set
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: [3.12]
+        cuda-version: [11.8]
+        platform: ["linux/arm64"]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Build
+        env:
+          PYTHON_VERSION: ${{ matrix.python-version }}
+          BUILD_PLATFORMS: ${{ matrix.platform }}
+          CUDA_VERSION: ${{ matrix.cuda-version }}
+          DOCKER_REGISTRY: harbor.holdenitdown.net
+          DOCKER_ORG: ops
+        run: |
+          make -f docker.Makefile
+
